@@ -18,7 +18,7 @@ An OpenCore EFI for the **Intel NUC8i7BEH** running **macOS Tahoe 26.7.2 (25G330
 | CPU | Intel Core i7-8559U (Coffee Lake) | |
 | iGPU | Intel Iris Plus Graphics 655 | `AAPL,ig-platform-id` = `0x3EA50004` |
 | RAM | 16 GB + 4 GB | asymmetric dual channel, works |
-| Storage | 2.5" SATA SSD | not NVMe, so NVMeFix is not used |
+| Storage | Crucial MX500 500 GB, M.2 2280 **SATA** | not NVMe, so NVMeFix is not used |
 | Ethernet | Intel I219-V | IntelMausi |
 | Wi-Fi | Intel Wireless-AC 9560 (PCI `8086:9DF0`) | AirportItlwm (native Wi-Fi menu) |
 | Bluetooth | Intel (USB, part of the 9560) | IntelBluetoothFirmware |
@@ -41,10 +41,10 @@ Tested on macOS 26.7.2 (25G330). "User-confirmed" means the owner of this machin
 | USB-C hub with DP and camera | Works if plugged in **before boot** | **Hot-plug is under test and not confirmed.** One run showed the hub as a USB 2.0 Billboard device only when plugged in while running |
 | Microphone | Untested | Input devices enumerate; no recording test |
 | Sleep / wake | Untested | Auto-sleep was disabled with `pmset` during testing |
-| Card reader | Not verified | Kext loads; no read/write test is documented |
+| Card reader | Works | 256 GB SDXC card mounts as "Built In SDXC Reader"; 32 MB write/read-back checksum matched (2026-10-27) |
 | Universal Clipboard, OTA update | Untested | |
 | AirDrop, AWDL | **Not supported** | No `awdl0` with this Wi-Fi driver |
-| Thunderbolt (PCIe/NHI) | **Not supported** | `system_profiler` reports no Thunderbolt driver; USB and DP over USB-C go through ACPI/USB paths instead |
+| Thunderbolt (PCIe/NHI) | **Not supported** | The USB-C port is driven by the JHL6340 (Alpine Ridge) controller. macOS sees its bridge (`8086:15DA`) and its USB controller (`8086:15DB`, `AppleUSBXHCIAR`), so USB and DP alt-mode work, but the Thunderbolt NHI (`15D9`) is not exposed and `system_profiler` reports no Thunderbolt driver. Real Thunderbolt devices are not expected to work |
 
 Intermittent USB drop-outs and `bluetoothd` crashes were seen earlier in the project. The `bluetoothd` crashes stopped after an in-place macOS reinstall; the USB root cause was never isolated (see [docs/history](docs/history/README.md)).
 

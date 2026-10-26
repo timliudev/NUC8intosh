@@ -18,7 +18,7 @@
 | CPU | Intel Core i7-8559U (Coffee Lake) | |
 | 內顯 | Intel Iris Plus Graphics 655 | `AAPL,ig-platform-id` = `0x3EA50004` |
 | 記憶體 | 16 GB + 4 GB | 雙通道不對稱，可運作 |
-| 儲存 | 2.5" SATA SSD | 非 NVMe，因此不使用 NVMeFix |
+| 儲存 | Crucial MX500 500 GB，M.2 2280 **SATA** | 非 NVMe，因此不使用 NVMeFix |
 | 有線網路 | Intel I219-V | IntelMausi |
 | 無線網路 | Intel Wireless-AC 9560（PCI `8086:9DF0`） | AirportItlwm（原生 Wi‑Fi 選單） |
 | 藍牙 | Intel（USB，9560 內建） | IntelBluetoothFirmware |
@@ -41,10 +41,10 @@
 | USB-C Hub（DP 與攝影機） | **開機前已插著**時可用 | **熱插拔仍在測試，未確認。** 有一次在系統運行中才插入，Hub 只以 USB 2.0 Billboard 裝置出現 |
 | 麥克風 | 未測 | 輸入裝置有列舉，沒做錄音測試 |
 | 睡眠／喚醒 | 未測 | 測試期間以 `pmset` 停用了自動睡眠 |
-| 讀卡機 | 未驗證 | kext 有載入；沒有讀寫測試紀錄 |
+| 讀卡機 | 正常 | 256 GB SDXC 卡掛載為「Built In SDXC Reader」；32 MB 寫入後讀回雜湊相符（2026-10-27） |
 | 通用剪貼簿、OTA 更新 | 未測 | |
 | AirDrop、AWDL | **不支援** | 此 Wi‑Fi 驅動沒有 `awdl0` |
-| Thunderbolt（PCIe／NHI） | **不支援** | `system_profiler` 顯示沒有 Thunderbolt 驅動；USB-C 上的 USB 與 DP 走 ACPI／USB 路徑 |
+| Thunderbolt（PCIe／NHI） | **不支援** | USB-C 埠由 JHL6340（Alpine Ridge）控制。macOS 看得到它的橋接器（`8086:15DA`）與 USB 控制器（`8086:15DB`，`AppleUSBXHCIAR`），所以 USB 與 DP alt-mode 可用；但 Thunderbolt NHI（`15D9`）沒出現，`system_profiler` 顯示沒有 Thunderbolt 驅動，真正的 Thunderbolt 裝置預期無法使用 |
 
 專案早期曾出現 USB 間歇失效與 `bluetoothd` 崩潰。`bluetoothd` 崩潰在原地重裝 macOS 後不再出現；USB 的根因未能釐清（見 [docs/history](docs/history/README.md)）。
 
