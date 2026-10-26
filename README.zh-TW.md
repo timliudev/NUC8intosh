@@ -44,7 +44,7 @@
 | 讀卡機 | 正常 | 256 GB SDXC 卡掛載為「Built In SDXC Reader」；32 MB 寫入後讀回雜湊相符（2026-10-27） |
 | 通用剪貼簿、OTA 更新 | 未測 | |
 | AirDrop、AWDL | **不支援** | 此 Wi‑Fi 驅動沒有 `awdl0` |
-| Thunderbolt（PCIe／NHI） | **不支援** | USB-C 埠由 JHL6340（Alpine Ridge）控制。macOS 看得到它的橋接器（`8086:15DA`）與 USB 控制器（`8086:15DB`，`AppleUSBXHCIAR`），所以 USB 與 DP alt-mode 可用；但 Thunderbolt NHI（`15D9`）沒出現，`system_profiler` 顯示沒有 Thunderbolt 驅動，真正的 Thunderbolt 裝置預期無法使用 |
+| Thunderbolt（PCIe／NHI） | **不支援** | USB-C 埠由 JHL6340（Alpine Ridge）控制。macOS 看得到它的橋接器（`8086:15DA`）與 USB 控制器（`8086:15DB`，`AppleUSBXHCIAR`），所以 USB 與 DP alt-mode 可用；但 Thunderbolt NHI（`15D9`）沒出現，`system_profiler` 顯示沒有 Thunderbolt 驅動，真正的 Thunderbolt 裝置預期無法使用 Thunderbolt 裝置**開機前接上**可當一般 PCIe 裝置使用（不能熱插拔）。原生 Thunderbolt 需要刷 Alpine Ridge 韌體（[osy/ThunderboltPatcher](https://github.com/osy/ThunderboltPatcher)），在 NUC8 上會造成睡眠喚醒 kernel panic 與 USB-C 不穩，2021 年後無人解決（[zearp/Nucintosh#174](https://github.com/zearp/Nucintosh/issues/174)），本 repo **放棄此路線**。開機時 USB-C 沒接東西、開機後才插可能無法辨識；呼叫 `\_SB.TBFP` 強制供電的 SSDT（已確認 BIOS 0098 DSDT 有此方法）測試中 |
 
 專案早期曾出現 USB 間歇失效與 `bluetoothd` 崩潰。`bluetoothd` 崩潰在原地重裝 macOS 後不再出現；USB 的根因未能釐清。
 
