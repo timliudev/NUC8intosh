@@ -129,4 +129,4 @@ The full account, including the Windows scripts used to prepare a single SSD, is
 - lshbluesky: the IntelBluetoothFirmware 2.5.x builds.
 - [0xFireWolf](https://github.com/0xFireWolf): RealtekCardReader and RealtekCardReaderFriend.
 
-No license file is included yet. Third-party binaries keep their own licenses.
+The [MIT License](LICENSE) covers the files written for this repo: the `config.plist` changes, documentation and scripts. OpenCore, the kexts, drivers and other third-party files keep their own licenses, and the ACPI tables, `USBPorts.kext` and `CPUFriendDataProvider.kext` taken from leoncdq/NUC8intosh are not covered by it.

@@ -129,4 +129,4 @@ OpenCore 本體、Drivers 與 `Resources` 來自 OpenCore 1.0.8 release 與 OcBi
 - lshbluesky：IntelBluetoothFirmware 2.5.x 建置。
 - [0xFireWolf](https://github.com/0xFireWolf)：RealtekCardReader 與 RealtekCardReaderFriend。
 
-目前沒有附 LICENSE 檔。第三方二進位檔各自保有其授權。
+本 repo 自行撰寫的部分（`config.plist` 調整、文件、腳本）採 [MIT 授權](LICENSE)。OpenCore、各 kext、驅動等第三方檔案保有各自的授權；取自 leoncdq/NUC8intosh 的 ACPI 表、`USBPorts.kext`、`CPUFriendDataProvider.kext` 不在 MIT 範圍內。
