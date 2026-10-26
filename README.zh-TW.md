@@ -120,7 +120,7 @@ OpenCore 本體、Drivers 與 `Resources` 來自 OpenCore 1.0.8 release 與 OcBi
 
 ## 致謝與授權
 
-- [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh)：本 repo 的起點，其 git 歷史予以保留。**七個 ACPI 表、`USBPorts.kext`、`CPUFriendDataProvider.kext`** 仍來自該 repo。**該 repo 沒有授權條款，正在向原作者請求使用許可。** 取得許可前，請視這些檔案為尚未取得再散布授權。
+- [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh)：本 repo 的起點，其 git 歷史予以保留。**七個 ACPI 表、`USBPorts.kext`、`CPUFriendDataProvider.kext`** 仍來自該 repo。
 - [zearp/Nucintosh](https://github.com/zearp/Nucintosh)：NUC8 Hackintosh 的參考指南。
 - [Acidanthera](https://github.com/acidanthera)：OpenCorePkg、Lilu、WhateverGreen、VirtualSMC、AppleALC、RestrictEvents、FeatureUnlock、CPUFriend、IntelMausi、BrcmPatchRAM（BlueToolFixup）、OcBinaryData。
 - [Dortania build-repo](https://github.com/dortania/build-repo)：多數 kext 與 OpenCore 使用的 CI 建置。

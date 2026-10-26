@@ -120,7 +120,7 @@ The full account, including the Windows scripts used to prepare a single SSD, is
 
 ## Credits and licensing
 
-- [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh): the starting point of this repo. Git history from that repo is kept. The **seven ACPI tables, `USBPorts.kext` and `CPUFriendDataProvider.kext`** still come from it. **That repository has no license, and permission to reuse these files is being requested.** Until it is granted, treat those files as not yet cleared for redistribution.
+- [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh): the starting point of this repo. Git history from that repo is kept. The **seven ACPI tables, `USBPorts.kext` and `CPUFriendDataProvider.kext`** still come from it.
 - [zearp/Nucintosh](https://github.com/zearp/Nucintosh): the reference NUC8 Hackintosh guide.
 - [Acidanthera](https://github.com/acidanthera): OpenCorePkg, Lilu, WhateverGreen, VirtualSMC, AppleALC, RestrictEvents, FeatureUnlock, CPUFriend, IntelMausi, BrcmPatchRAM (BlueToolFixup), OcBinaryData.
 - [Dortania build-repo](https://github.com/dortania/build-repo): CI builds used for most kexts and OpenCore.
