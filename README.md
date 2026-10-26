@@ -14,7 +14,7 @@ An OpenCore EFI for the **Intel NUC8i7BEH** running **macOS Tahoe 26.7.2 (25G330
 
 | Part | Model | Notes |
 | --- | --- | --- |
-| Machine | Intel NUC8i7BEH (Bean Canyon) | BIOS 0095 or newer recommended |
+| Machine | Intel NUC8i7BEH (Bean Canyon) | Tested on BIOS BECFL357.86A.0098 |
 | CPU | Intel Core i7-8559U (Coffee Lake) | |
 | iGPU | Intel Iris Plus Graphics 655 | `AAPL,ig-platform-id` = `0x3EA50004` |
 | RAM | 16 GB + 4 GB | asymmetric dual channel, works |

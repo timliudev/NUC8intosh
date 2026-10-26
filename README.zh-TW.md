@@ -14,7 +14,7 @@
 
 | 項目 | 型號 | 備註 |
 | --- | --- | --- |
-| 主機 | Intel NUC8i7BEH (Bean Canyon) | 建議 BIOS 0095 以上 |
+| 主機 | Intel NUC8i7BEH (Bean Canyon) | BIOS BECFL357.86A.0098 實測 |
 | CPU | Intel Core i7-8559U (Coffee Lake) | |
 | 內顯 | Intel Iris Plus Graphics 655 | `AAPL,ig-platform-id` = `0x3EA50004` |
 | 記憶體 | 16 GB + 4 GB | 雙通道不對稱，可運作 |
