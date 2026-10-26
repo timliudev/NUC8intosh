@@ -87,7 +87,7 @@ OpenCore 本體與 Drivers（`OpenCore.efi`、`BOOTx64.efi`、`OpenCanopy`、`Op
 | Advanced > Boot > Boot Configuration | Fast Boot、Network Boot | Disabled |
 | Advanced > Devices > Video | IGD Minimum Memory | 64 MB |
 | Advanced > Devices > Video | IGD Aperture Size | 256 MB |
-| Advanced > Security > Security Features | Thunderbolt Security Level | 選項：Legacy Mode／Unique ID（BIOS 預設）／One time saved Key／DP++ only（依 BIOS 0098 的 UQI 清單）。目前的熱插拔結果是在未改動此值的情況下取得，實際設定值待確認 |
+| Advanced > Security > Security Features | Thunderbolt Security Level | 選項：Legacy Mode／Unique ID（BIOS 預設）／One time saved Key／DP++ only（依 BIOS 0098 的 UQI 清單）。**實測使用預設值 Unique ID**（搭配 SSDT-TBFP，USB-C 熱插拔與原生 NHI 可用），不需要改成 Legacy Mode |
 
 建議：Deep S4/S5 Disabled、Wake on LAN from S4/S5 Stay Off、Intel SGX Disabled。SATA Mode 維持 AHCI。VT-d 可以開著，因為 `DisableIoMapper=true` 讓 macOS 不使用它。
 

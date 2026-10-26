@@ -87,7 +87,7 @@ Press F2, load defaults with F9 first, then change:
 | Advanced > Boot > Boot Configuration | Fast Boot, Network Boot | Disabled |
 | Advanced > Devices > Video | IGD Minimum Memory | 64 MB |
 | Advanced > Devices > Video | IGD Aperture Size | 256 MB |
-| Advanced > Security > Security Features | Thunderbolt Security Level | Options: Legacy Mode / Unique ID (BIOS default) / One time saved Key / DP++ only (from the BIOS 0098 UQI list). The current hot-plug results were obtained with the value left as-is; which value is set is being confirmed |
+| Advanced > Security > Security Features | Thunderbolt Security Level | Options: Legacy Mode / Unique ID (BIOS default) / One time saved Key / DP++ only (from the BIOS 0098 UQI list). **Tested with the default, Unique ID** (USB-C hot-plug and native NHI work with SSDT-TBFP). Legacy Mode is not needed |
 
 Recommended: Deep S4/S5 Disabled, Wake on LAN from S4/S5 Stay Off, Intel SGX Disabled. Keep SATA Mode = AHCI. VT-d may stay on because `DisableIoMapper=true` keeps macOS from using it.
 
