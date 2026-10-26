@@ -62,6 +62,14 @@
 				<key>Path</key>
 				<string>SSDT-TYPC-NUC8-BC.aml</string>
 			</dict>
+			<dict>
+				<key>Comment</key>
+				<string>TB force-power (TBFP) via RP05.PINI</string>
+				<key>Enabled</key>
+				<true/>
+				<key>Path</key>
+				<string>SSDT-TBFP.aml</string>
+			</dict>
 		</array>
 		<key>Delete</key>
 		<array>
