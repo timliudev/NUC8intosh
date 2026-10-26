@@ -38,13 +38,14 @@
 | 藍牙 | 可用 | IntelBluetoothFirmware 2.5.2；藍牙 DAC 的 A2DP／HFP 使用者確認 |
 | 3.5 mm 音訊輸出 | 可用 | SimpleHDA 搭配 layout-id 8，使用者確認。layout-id 3 只有雜訊 |
 | USB 音訊 | 可用 | 使用者確認 |
-| USB-C Hub（DP 與攝影機） | **開機前已插著**時可用 | **熱插拔仍在測試，未確認。** 有一次在系統運行中才插入，Hub 只以 USB 2.0 Billboard 裝置出現 |
+| USB-C Hub（DP、鏡頭） | 可用，**含熱插拔**（需 SSDT-TBFP） | 2026-10-27 實測：開機時 USB-C 未接任何裝置，開機後才插 Hub，USB 鏡頭正常出現；DP 螢幕第一次需把 DP 線拔插一次才亮，待重複測試。開機前接上同樣可用 |
 | 麥克風 | 未測 | 輸入裝置有列舉，沒做錄音測試 |
-| 睡眠／喚醒 | 未測 | 測試期間以 `pmset` 停用了自動睡眠 |
+| 睡眠／喚醒 | **未測，維持停用** | `pmset sleep 0`。查無 NUC8 在 Sonoma 以後或搭配 Thunderbolt 強制供電的睡眠實測；AirportItlwm 在 Tahoe 有喚醒後失效的回報（[laobamac/itlwm#19](https://github.com/laobamac/itlwm/issues/19)，修正 `2d3e797` 不在目前使用的版本），IntelBluetoothFirmware 亦有喚醒問題（[#484](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/issues/484)） |
 | 讀卡機 | 正常 | 256 GB SDXC 卡掛載為「Built In SDXC Reader」；32 MB 寫入後讀回雜湊相符（2026-10-27） |
-| 通用剪貼簿、OTA 更新 | 未測 | |
+| OTA 更新 | 可用 | 已透過軟體更新從 25G325 升到 25G330（`revpatch=sbvmm` + RestrictEvents） |
+| 通用剪貼簿 | 未測 | |
 | AirDrop、AWDL | **不支援** | 此 Wi‑Fi 驅動沒有 `awdl0` |
-| Thunderbolt（PCIe／NHI） | **不支援** | USB-C 埠由 JHL6340（Alpine Ridge）控制。macOS 看得到它的橋接器（`8086:15DA`）與 USB 控制器（`8086:15DB`，`AppleUSBXHCIAR`），所以 USB 與 DP alt-mode 可用；但 Thunderbolt NHI（`15D9`）沒出現，`system_profiler` 顯示沒有 Thunderbolt 驅動，真正的 Thunderbolt 裝置預期無法使用 Thunderbolt 裝置**開機前接上**可當一般 PCIe 裝置使用（不能熱插拔）。原生 Thunderbolt 需要刷 Alpine Ridge 韌體（[osy/ThunderboltPatcher](https://github.com/osy/ThunderboltPatcher)），在 NUC8 上會造成睡眠喚醒 kernel panic 與 USB-C 不穩，2021 年後無人解決（[zearp/Nucintosh#174](https://github.com/zearp/Nucintosh/issues/174)），本 repo **放棄此路線**。開機時 USB-C 沒接東西、開機後才插可能無法辨識；呼叫 `\_SB.TBFP` 強制供電的 SSDT（已確認 BIOS 0098 DSDT 有此方法）測試中 |
+| Thunderbolt（原生） | **部分／實驗性** | JHL6340（Alpine Ridge），**未刷韌體**。加入 SSDT-TBFP 後 NHI（`8086:15D9`）出現、`AppleThunderboltNHIType3` 載入；Thunderbolt 裝置本身未測。刷控制器韌體（[osy/ThunderboltPatcher](https://github.com/osy/ThunderboltPatcher)）**不採用**：在 NUC8 上會造成睡眠喚醒 kernel panic 與 USB-C 不穩，2021 年後無人解決（[zearp/Nucintosh#174](https://github.com/zearp/Nucintosh/issues/174)） |
 
 專案早期曾出現 USB 間歇失效與 `bluetoothd` 崩潰。`bluetoothd` 崩潰在原地重裝 macOS 後不再出現；USB 的根因未能釐清。
 
@@ -112,7 +113,7 @@ OpenCore 本體與 Drivers（`OpenCore.efi`、`BOOTx64.efi`、`OpenCanopy`、`Op
 
 ## 評估中的殘留設定
 
-`boot-args` 中的 `amfi=0x80`，以及 NVRAM 中的 `csr-active-config` = `03080000`，是為了一條從未執行的 OCLP-Mod root patch 路線而加入的。它們是**殘留設定**，必要性尚未評估，也會削弱安全檢查。最後一次檢查時，實際 NVRAM 的 `csr-active-config` 仍是 `00000000`（SIP 開啟），因為舊值沒有被刪除。若不需要請自行評估後移除，每次改動後都要重新測試。其餘 `boot-args`（`keepsyms=1 debug=0x100 revpatch=sbvmm revcpu=1 revcpuname=...`）與 `ProtocolOverrides` 維持實測時的原樣。
+`amfi=0x80` 與 `csr-active-config` = `03080000` 當初是為一條從未執行的 OCLP-Mod root patch 路線加入的，**已於 2026-10-27 移除**：`boot-args` 不再含 `amfi=0x80`，`csr-active-config` 設為 `00000000` 並列入 `NVRAM -> Delete`，即使重設 NVRAM，SIP 也維持全開。重開機後已確認 3.5mm 音效（SimpleHDA）、Wi-Fi（AirportItlwm）、藍牙、USB-C Hub 與兩台螢幕皆正常。
 
 ## 致謝與授權
 

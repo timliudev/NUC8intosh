@@ -38,13 +38,14 @@ Tested on macOS 26.7.2 (25G330). "User-confirmed" means the owner of this machin
 | Bluetooth | Works | IntelBluetoothFirmware 2.5.2; A2DP/HFP to a Bluetooth DAC user-confirmed |
 | 3.5 mm audio output | Works | SimpleHDA with layout-id 8, user-confirmed. layout-id 3 produced only noise |
 | USB audio | Works | User-confirmed |
-| USB-C hub with DP and camera | Works if plugged in **before boot** | **Hot-plug is under test and not confirmed.** One run showed the hub as a USB 2.0 Billboard device only when plugged in while running |
+| USB-C hub with DP and camera | Works, **hot-plug included** (with SSDT-TBFP) | Tested 2026-10-27: booted with nothing on USB-C, then plugged the hub in; USB cameras enumerated. The DP monitor needed one DP-cable re-plug on the first attempt; repeat tests pending. Hub attached at boot also works |
 | Microphone | Untested | Input devices enumerate; no recording test |
-| Sleep / wake | Untested | Auto-sleep was disabled with `pmset` during testing |
+| Sleep / wake | **Not tested, kept disabled** | `pmset sleep 0`. No public reports of NUC8 sleep on Sonoma+ or with Thunderbolt force-power; known Tahoe wake issues in AirportItlwm ([laobamac/itlwm#19](https://github.com/laobamac/itlwm/issues/19), fix `2d3e797` not in the shipped build) and IntelBluetoothFirmware ([#484](https://github.com/OpenIntelWireless/IntelBluetoothFirmware/issues/484)) |
 | Card reader | Works | 256 GB SDXC card mounts as "Built In SDXC Reader"; 32 MB write/read-back checksum matched (2026-10-27) |
-| Universal Clipboard, OTA update | Untested | |
+| OTA update | Works | 25G325 → 25G330 via Software Update (`revpatch=sbvmm` + RestrictEvents) |
+| Universal Clipboard | Untested | |
 | AirDrop, AWDL | **Not supported** | No `awdl0` with this Wi-Fi driver |
-| Thunderbolt (PCIe/NHI) | **Not supported** | The USB-C port is driven by the JHL6340 (Alpine Ridge) controller. macOS sees its bridge (`8086:15DA`) and its USB controller (`8086:15DB`, `AppleUSBXHCIAR`), so USB and DP alt-mode work, but the Thunderbolt NHI (`15D9`) is not exposed and `system_profiler` reports no Thunderbolt driver. Real Thunderbolt devices are not expected to work Thunderbolt devices attached **before boot** work as plain PCIe devices (no hot-plug). Native Thunderbolt would need flashing the Alpine Ridge firmware ([osy/ThunderboltPatcher](https://github.com/osy/ThunderboltPatcher)); on NUC8 this causes wake-from-sleep kernel panics and unstable USB-C, with no fix reported since 2021 ([zearp/Nucintosh#174](https://github.com/zearp/Nucintosh/issues/174)), so this repo **does not pursue it**. USB-C devices plugged in after a boot with nothing attached may not enumerate; a `\_SB.TBFP` force-power SSDT (method confirmed present in BIOS 0098 DSDT) is under test |
+| Thunderbolt (native) | **Partial / experimental** | JHL6340 (Alpine Ridge), firmware **not** flashed. With SSDT-TBFP the NHI (`8086:15D9`) appears and `AppleThunderboltNHIType3` loads; Thunderbolt devices themselves are untested. Flashing the controller firmware ([osy/ThunderboltPatcher](https://github.com/osy/ThunderboltPatcher)) is **not pursued**: on NUC8 it causes wake-from-sleep panics and unstable USB-C with no fix since 2021 ([zearp/Nucintosh#174](https://github.com/zearp/Nucintosh/issues/174)) |
 
 Intermittent USB drop-outs and `bluetoothd` crashes were seen earlier in the project. The `bluetoothd` crashes stopped after an in-place macOS reinstall; the USB root cause was never isolated.
 
@@ -112,7 +113,7 @@ Recommended: Deep S4/S5 Disabled, Wake on LAN from S4/S5 Stay Off, Intel SGX Dis
 
 ## Leftovers under evaluation
 
-`amfi=0x80` in `boot-args` and `csr-active-config` = `03080000` in `NVRAM` were added for an OCLP-Mod root-patch route that was never run. They are **leftovers**, their necessity has not been evaluated, and they weaken security checks. At the last check, the live NVRAM still reported `csr-active-config` as `00000000` (SIP enabled), because the older value was not deleted. Review and remove them if you do not need them; test after any change. The other `boot-args` (`keepsyms=1 debug=0x100 revpatch=sbvmm revcpu=1 revcpuname=...`) and `ProtocolOverrides` are kept exactly as tested.
+`amfi=0x80` and `csr-active-config` = `03080000` were once added for an OCLP-Mod root-patch route that was never run. Both were **removed on 2026-10-27**: `boot-args` no longer contains `amfi=0x80`, and `csr-active-config` is `00000000` and listed under `NVRAM -> Delete`, so SIP stays fully enabled even after an NVRAM reset. After a reboot, 3.5 mm audio (SimpleHDA), Wi-Fi (AirportItlwm), Bluetooth, the USB-C hub and both displays were confirmed working.
 
 ## Credits and licensing
 
