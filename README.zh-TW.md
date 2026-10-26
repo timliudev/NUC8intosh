@@ -46,11 +46,11 @@
 | AirDrop、AWDL | **不支援** | 此 Wi‑Fi 驅動沒有 `awdl0` |
 | Thunderbolt（PCIe／NHI） | **不支援** | USB-C 埠由 JHL6340（Alpine Ridge）控制。macOS 看得到它的橋接器（`8086:15DA`）與 USB 控制器（`8086:15DB`，`AppleUSBXHCIAR`），所以 USB 與 DP alt-mode 可用；但 Thunderbolt NHI（`15D9`）沒出現，`system_profiler` 顯示沒有 Thunderbolt 驅動，真正的 Thunderbolt 裝置預期無法使用 |
 
-專案早期曾出現 USB 間歇失效與 `bluetoothd` 崩潰。`bluetoothd` 崩潰在原地重裝 macOS 後不再出現；USB 的根因未能釐清（見 [docs/history](docs/history/README.md)）。
+專案早期曾出現 USB 間歇失效與 `bluetoothd` 崩潰。`bluetoothd` 崩潰在原地重裝 macOS 後不再出現；USB 的根因未能釐清。
 
 ## Kext
 
-下列版本均讀自本 repo 內各 kext 的 `Info.plist`。「最新」於 2026-10-27 對照 GitHub release 與 [Dortania build-repo](https://github.com/dortania/build-repo)（Acidanthera master 的 CI 編譯；雜湊見安裝紀錄 [第 3.1 節](docs/history/01-windows-install-claude.md)）查得。「二進位」＝把 kext 執行檔的 sha256 與所列來源 zip 內的檔案比對。有較新版本者 EFI **未**更動，此處僅作報告。
+下列版本均讀自本 repo 內各 kext 的 `Info.plist`。「最新」於 2026-10-27 對照 GitHub release 與 [Dortania build-repo](https://github.com/dortania/build-repo)（Acidanthera master 的 CI 編譯）查得。「二進位」＝把 kext 執行檔的 sha256 與所列來源 zip 內的檔案比對。有較新版本者 EFI **未**更動，此處僅作報告。
 
 | Kext | 已安裝 | 最新可用（2026-10-27 查） | 來源 | 二進位 |
 | --- | --- | --- | --- | --- |
@@ -91,8 +91,6 @@ OpenCore 本體與 Drivers 為 Dortania `64d1ed3` 建置（`OpenCore.efi`、`Ope
 
 ## 安裝流程（摘要）
 
-完整過程（包含在 Windows 準備單顆 SSD 的腳本）見 [docs/history/01-windows-install-claude.md](docs/history/01-windows-install-claude.md)。
-
 1. 產生自己的 SMBIOS 值並填進 `config.plist`（見上方警告）。
 2. 用 OpenCorePkg 的 `macrecovery.py`（board `Mac-CFF7D910A743CAAF`）下載 macOS Recovery 映像，連同 `EFI` 資料夾放到 FAT32 的 EFI 分割區，可放 USB 隨身碟或目標 SSD。
 3. 以 F10 開機選單從該碟開機，在 OpenCore 選單選 Recovery 項目。
@@ -113,10 +111,6 @@ OpenCore 本體與 Drivers 為 Dortania `64d1ed3` 建置（`OpenCore.efi`、`Ope
 ## 評估中的殘留設定
 
 `boot-args` 中的 `amfi=0x80`，以及 NVRAM 中的 `csr-active-config` = `03080000`，是為了一條從未執行的 OCLP-Mod root patch 路線而加入的。它們是**殘留設定**，必要性尚未評估，也會削弱安全檢查。最後一次檢查時，實際 NVRAM 的 `csr-active-config` 仍是 `00000000`（SIP 開啟），因為舊值沒有被刪除。若不需要請自行評估後移除，每次改動後都要重新測試。其餘 `boot-args`（`keepsyms=1 debug=0x100 revpatch=sbvmm revcpu=1 revcpuname=...`）與 `ProtocolOverrides` 維持實測時的原樣。
-
-## 更多文件
-
-[docs/history](docs/history/README.md) 收錄多個 AI 輔助 session（Claude、Codex、Antigravity）的建置與除錯紀錄，已去識別化。其中部分結論後來被推翻，各檔案都標示了哪些已驗證、哪些未驗證。
 
 ## 致謝與授權
 

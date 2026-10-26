@@ -6,3 +6,5 @@ com.apple.recovery.boot/
 opencore-*.txt
 SysReport/
 config.plist.bak*
+docs/history/
+HANDOFF-*.md

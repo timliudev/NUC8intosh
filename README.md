@@ -46,11 +46,11 @@ Tested on macOS 26.7.2 (25G330). "User-confirmed" means the owner of this machin
 | AirDrop, AWDL | **Not supported** | No `awdl0` with this Wi-Fi driver |
 | Thunderbolt (PCIe/NHI) | **Not supported** | The USB-C port is driven by the JHL6340 (Alpine Ridge) controller. macOS sees its bridge (`8086:15DA`) and its USB controller (`8086:15DB`, `AppleUSBXHCIAR`), so USB and DP alt-mode work, but the Thunderbolt NHI (`15D9`) is not exposed and `system_profiler` reports no Thunderbolt driver. Real Thunderbolt devices are not expected to work |
 
-Intermittent USB drop-outs and `bluetoothd` crashes were seen earlier in the project. The `bluetoothd` crashes stopped after an in-place macOS reinstall; the USB root cause was never isolated (see [docs/history](docs/history/README.md)).
+Intermittent USB drop-outs and `bluetoothd` crashes were seen earlier in the project. The `bluetoothd` crashes stopped after an in-place macOS reinstall; the USB root cause was never isolated.
 
 ## Kexts
 
-All versions below were read from the kexts' `Info.plist` files in this repo. "Latest" was checked on 2026-10-27 against GitHub releases and [Dortania build-repo](https://github.com/dortania/build-repo) (CI builds of Acidanthera master; hashes are in the install notes, [section 3.1](docs/history/01-windows-install-claude.md)). "Binary" = the kext executable's sha256 was compared with the binary in the named source zip. Where a newer build exists the EFI was **not** changed; this is only a report.
+All versions below were read from the kexts' `Info.plist` files in this repo. "Latest" was checked on 2026-10-27 against GitHub releases and [Dortania build-repo](https://github.com/dortania/build-repo) (CI builds of Acidanthera master). "Binary" = the kext executable's sha256 was compared with the binary in the named source zip. Where a newer build exists the EFI was **not** changed; this is only a report.
 
 | Kext | Installed | Latest available (checked 2026-10-27) | Source | Binary |
 | --- | --- | --- | --- | --- |
@@ -91,8 +91,6 @@ Recommended: Deep S4/S5 Disabled, Wake on LAN from S4/S5 Stay Off, Intel SGX Dis
 
 ## Install flow (summary)
 
-The full account, including the Windows scripts used to prepare a single SSD, is in [docs/history/01-windows-install-claude.md](docs/history/01-windows-install-claude.md).
-
 1. Generate your SMBIOS values and put them in `config.plist` (see the warning above).
 2. Download a macOS Recovery image with OpenCorePkg's `macrecovery.py` (board `Mac-CFF7D910A743CAAF`) and place it with the `EFI` folder on a FAT32 EFI partition, either on a USB stick or on the target SSD.
 3. Boot it (F10 boot menu), choose the Recovery entry in the OpenCore picker.
@@ -113,10 +111,6 @@ The full account, including the Windows scripts used to prepare a single SSD, is
 ## Leftovers under evaluation
 
 `amfi=0x80` in `boot-args` and `csr-active-config` = `03080000` in `NVRAM` were added for an OCLP-Mod root-patch route that was never run. They are **leftovers**, their necessity has not been evaluated, and they weaken security checks. At the last check, the live NVRAM still reported `csr-active-config` as `00000000` (SIP enabled), because the older value was not deleted. Review and remove them if you do not need them; test after any change. The other `boot-args` (`keepsyms=1 debug=0x100 revpatch=sbvmm revcpu=1 revcpuname=...`) and `ProtocolOverrides` are kept exactly as tested.
-
-## More documentation
-
-[docs/history](docs/history/README.md) holds de-identified build and troubleshooting notes from several AI-assisted sessions (Claude, Codex, Antigravity). Some conclusions in them were later overturned; each file marks what is verified and what is not.
 
 ## Credits and licensing
 
