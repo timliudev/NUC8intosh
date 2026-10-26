@@ -18,7 +18,7 @@ An OpenCore EFI for the **Intel NUC8i7BEH** running **macOS Tahoe 26.7.2 (25G330
 | CPU | Intel Core i7-8559U (Coffee Lake) | |
 | iGPU | Intel Iris Plus Graphics 655 | `AAPL,ig-platform-id` = `0x3EA50004` |
 | RAM | 16 GB + 4 GB | asymmetric dual channel, works |
-| Storage | Crucial MX500 500 GB, M.2 2280 **SATA** | not NVMe, so NVMeFix is not used |
+| Storage | Crucial MX500 500 GB, M.2 2280 **SATA** | not NVMe, so NVMeFix is not used. NVMe drives work natively; NVMeFix is optional (power management for non-Apple NVMe) |
 | Ethernet | Intel I219-V | IntelMausi |
 | Wi-Fi | Intel Wireless-AC 9560 (PCI `8086:9DF0`) | AirportItlwm (native Wi-Fi menu) |
 | Bluetooth | Intel (USB, part of the 9560) | IntelBluetoothFirmware |
@@ -79,7 +79,7 @@ Not official-stable on purpose: **AirportItlwm** (laobamac's 2.4.0-alpha is the 
 
 ## BIOS settings
 
-Press F2, load defaults with F9 first, then change:
+Tested on **BIOS BECFL357.86A.0098** (2026-10-27; upgraded from 0095 with F7). Press F2, load defaults with F9, then set:
 
 | Path | Setting | Value |
 | --- | --- | --- |
@@ -90,7 +90,7 @@ Press F2, load defaults with F9 first, then change:
 | Advanced > Devices > Video | IGD Aperture Size | 256 MB |
 | Advanced > Security > Security Features | Thunderbolt Security Level | Options: Legacy Mode / Unique ID (BIOS default) / One time saved Key / DP++ only (from the BIOS 0098 UQI list). **Tested with the default, Unique ID** (USB-C hot-plug and native NHI work with SSDT-TBFP). Legacy Mode is not needed |
 
-Recommended: Deep S4/S5 Disabled, Wake on LAN from S4/S5 Stay Off, Intel SGX Disabled. Keep SATA Mode = AHCI. VT-d may stay on because `DisableIoMapper=true` keeps macOS from using it.
+SATA Mode stays AHCI (default). VT-d may stay on because `DisableIoMapper=true` keeps macOS from using it. Other NUC8 guides also set Deep S4/S5 Disabled, Wake on LAN from S4/S5 Stay Off and Intel SGX Disabled; this build did not verify whether those matter.
 
 ## Install flow (summary)
 

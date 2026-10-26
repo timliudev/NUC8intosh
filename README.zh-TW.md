@@ -18,7 +18,7 @@
 | CPU | Intel Core i7-8559U (Coffee Lake) | |
 | 內顯 | Intel Iris Plus Graphics 655 | `AAPL,ig-platform-id` = `0x3EA50004` |
 | 記憶體 | 16 GB + 4 GB | 雙通道不對稱，可運作 |
-| 儲存 | Crucial MX500 500 GB，M.2 2280 **SATA** | 非 NVMe，因此不使用 NVMeFix |
+| 儲存 | Crucial MX500 500 GB，M.2 2280 **SATA** | 非 NVMe，因此不使用 NVMeFix。NVMe 碟 macOS 原生支援，NVMeFix 為選用（改善非 Apple NVMe 的電源管理） |
 | 有線網路 | Intel I219-V | IntelMausi |
 | 無線網路 | Intel Wireless-AC 9560（PCI `8086:9DF0`） | AirportItlwm（原生 Wi‑Fi 選單） |
 | 藍牙 | Intel（USB，9560 內建） | IntelBluetoothFirmware |
@@ -79,7 +79,7 @@ OpenCore 本體與 Drivers（`OpenCore.efi`、`BOOTx64.efi`、`OpenCanopy`、`Op
 
 ## BIOS 設定
 
-開機按 F2，先按 F9 載入預設值，再修改：
+在 **BIOS BECFL357.86A.0098** 實測（2026-10-27，由 0095 以 F7 升級）。開機按 F2，先按 F9 載入預設值，再設定：
 
 | 路徑 | 項目 | 設定 |
 | --- | --- | --- |
@@ -90,7 +90,7 @@ OpenCore 本體與 Drivers（`OpenCore.efi`、`BOOTx64.efi`、`OpenCanopy`、`Op
 | Advanced > Devices > Video | IGD Aperture Size | 256 MB |
 | Advanced > Security > Security Features | Thunderbolt Security Level | 選項：Legacy Mode／Unique ID（BIOS 預設）／One time saved Key／DP++ only（依 BIOS 0098 的 UQI 清單）。**實測使用預設值 Unique ID**（搭配 SSDT-TBFP，USB-C 熱插拔與原生 NHI 可用），不需要改成 Legacy Mode |
 
-建議：Deep S4/S5 Disabled、Wake on LAN from S4/S5 Stay Off、Intel SGX Disabled。SATA Mode 維持 AHCI。VT-d 可以開著，因為 `DisableIoMapper=true` 讓 macOS 不使用它。
+SATA Mode 維持 AHCI（預設）。VT-d 可以開著，因為 `DisableIoMapper=true` 讓 macOS 不使用它。其他 NUC8 指南另外會設 Deep S4/S5 Disabled、Wake on LAN from S4/S5 Stay Off、Intel SGX Disabled；本建置沒有驗證這幾項是否必要。
 
 ## 安裝流程（摘要）
 
