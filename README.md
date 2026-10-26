@@ -4,7 +4,7 @@ English | [繁體中文](README.zh-TW.md)
 
 An OpenCore EFI for the **Intel NUC8i7BEH** running **macOS Tahoe 26.7.2 (25G330)**, plus the notes that explain how it got there.
 
-- OpenCore **1.0.8** (Dortania build-repo, OpenCorePkg commit `64d1ed3`, built 2026-08-31)
+- OpenCore **1.0.8** (Dortania build-repo dev build [`64d1ed3`](https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-64d1ed3), built 2026-08-31; the official 1.0.8 release is 2026-09-27 and Dortania now builds 1.0.9 dev, checked 2026-10-27)
 - SMBIOS: `iMac20,2`
 - This is a personal, hand-tested setup, not a turnkey release. Read "What works / what does not" before relying on it.
 
@@ -50,29 +50,29 @@ Intermittent USB drop-outs and `bluetoothd` crashes were seen earlier in the pro
 
 ## Kexts
 
-All versions below were read from the kexts' `Info.plist` files in this repo. Dortania build-repo builds are CI builds of Acidanthera master; hashes are in the install notes ([section 3.1](docs/history/01-windows-install-claude.md)).
+All versions below were read from the kexts' `Info.plist` files in this repo. "Latest" was checked on 2026-10-27 against GitHub releases and [Dortania build-repo](https://github.com/dortania/build-repo) (CI builds of Acidanthera master; hashes are in the install notes, [section 3.1](docs/history/01-windows-install-claude.md)). "Binary" = the kext executable's sha256 was compared with the binary in the named source zip. Where a newer build exists the EFI was **not** changed; this is only a report.
 
-| Kext | Version | Source |
-| --- | --- | --- |
-| Lilu | 1.7.3 | Dortania build-repo |
-| WhateverGreen | 1.7.1 | Dortania build-repo |
-| VirtualSMC, SMCProcessor, SMCSuperIO | 1.3.8 | Dortania build-repo |
-| RestrictEvents | 1.1.7 | Dortania build-repo |
-| FeatureUnlock | 1.1.9 | Dortania build-repo |
-| CPUFriend | 1.3.1 | Dortania build-repo |
-| BlueToolFixup (BrcmPatchRAM) | 2.7.3 | Dortania build-repo, BrcmPatchRAM commit `6538902` |
-| AppleALC | 1.9.8 | copied from leoncdq/NUC8intosh; the repo has no recorded hash (1.9.8 was the latest upstream release at the time) |
-| SimpleHDA | 1.0.0 | [laobamac/SimpleHDA](https://github.com/laobamac/SimpleHDA) v1.0.0 release; zip sha256 `89198256664078c91155d673ee7cebb08134dad1b71d5e34b0aa4ef0d4877f8f` |
-| IntelMausi | 1.0.8 | [acidanthera/IntelMausi](https://github.com/acidanthera/IntelMausi) release 1.0.8 |
-| AirportItlwm | 2.4.0 (alpha, commit `738d4c6`, Tahoe build) | laobamac fork of itlwm, release asset `AirportItlwm-Tahoe-v2.4.0-RELEASE-alpha-738d4c6.zip` (prerelease, 2026-10-11); sha256 `25680aa39ddd79b205141875b261bdcc28bea150d13f27787b3c215555daa00f`. The exact repository path comes from the session notes; check it before downloading |
-| IntelBluetoothFirmware, IntelBTPatcher | 2.5.2 | [lshbluesky/IntelBluetoothFirmware](https://github.com/lshbluesky/IntelBluetoothFirmware) v2.5.2; zip sha256 `c26140b2091e7b41aab5e5fbdd322112908efc509f9fde3d71d4e3f91396b991` (the Tahoe-capable 2.5.0 was originally built from upstream master via CI) |
-| RealtekCardReader | 0.9.7 | [0xFireWolf/RealtekCardReader](https://github.com/0xFireWolf/RealtekCardReader) release |
-| RealtekCardReaderFriend | 1.0.4 | [0xFireWolf/RealtekCardReaderFriend](https://github.com/0xFireWolf/RealtekCardReaderFriend) release |
-| USBPorts | 1.1 | local USB map, from leoncdq/NUC8intosh |
-| CPUFriendDataProvider | 1.0.1 | local power data, from leoncdq/NUC8intosh |
-| itlwm | 2.3.0 | present in the folder but **disabled** in `config.plist` (replaced by AirportItlwm) |
+| Kext | Installed | Latest available (checked 2026-10-27) | Source | Binary |
+| --- | --- | --- | --- | --- |
+| [Lilu](https://github.com/acidanthera/Lilu) | 1.7.3 | stable 1.7.2; dev 1.7.3 (newer build `0249c3a`) | Dortania [`Lilu-0515f40`](https://github.com/dortania/build-repo/releases/tag/Lilu-0515f40) | matches `0515f40` |
+| [WhateverGreen](https://github.com/acidanthera/WhateverGreen) | 1.7.1 | stable 1.7.1; dev 1.7.2 (`093e76f`) | Dortania [`WhateverGreen-ed5e710`](https://github.com/dortania/build-repo/releases/tag/WhateverGreen-ed5e710) (same binary as `0762cec`) | matches dev build; differs from the 1.7.1 release zip |
+| [VirtualSMC](https://github.com/acidanthera/VirtualSMC), SMCProcessor, SMCSuperIO | 1.3.8 | stable 1.3.8; dev 1.3.9 (`b5c62c2`) | Dortania [`VirtualSMC-772c7bd`](https://github.com/dortania/build-repo/releases/tag/VirtualSMC-772c7bd) | matches dev build; VirtualSMC differs from the 1.3.8 release zip |
+| [RestrictEvents](https://github.com/acidanthera/RestrictEvents) | 1.1.7 | stable 1.1.6; dev 1.1.7 is newest (`9265e78`) | Dortania [`RestrictEvents-9265e78`](https://github.com/dortania/build-repo/releases/tag/RestrictEvents-9265e78) | matches |
+| [FeatureUnlock](https://github.com/acidanthera/FeatureUnlock) | 1.1.9 | stable 1.1.8; dev 1.1.9 is newest (`201bd45`) | Dortania [`FeatureUnlock-201bd45`](https://github.com/dortania/build-repo/releases/tag/FeatureUnlock-201bd45) | matches |
+| [CPUFriend](https://github.com/acidanthera/CPUFriend) | 1.3.1 | stable 1.3.0; dev 1.3.1 is newest (`30c7733`) | Dortania [`CPUFriend-30c7733`](https://github.com/dortania/build-repo/releases/tag/CPUFriend-30c7733) | matches |
+| BlueToolFixup ([BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM)) | 2.7.3 | stable 2.7.2; dev 2.7.3 is newest (`6538902`) | Dortania [`BrcmPatchRAM-6538902`](https://github.com/dortania/build-repo/releases/tag/BrcmPatchRAM-6538902) | matches |
+| [AppleALC](https://github.com/acidanthera/AppleALC) | 1.9.8 (a 2026-03-20 dev build) | stable 1.9.8 (2026-09-27); newer than installed | Not copied from a release: the binary is Dortania [`AppleALC-b31765e`](https://github.com/dortania/build-repo/releases/tag/AppleALC-b31765e) ("Bump version" commit), which is how it reached leoncdq/NUC8intosh | matches `b31765e`; **differs** from the official 1.9.8 release zip and from Dortania `f9fceb4` |
+| [SimpleHDA](https://github.com/laobamac/SimpleHDA) | 1.0.0 | 1.0.0 (v1.0.0, 2026-10-14) is the latest | laobamac/SimpleHDA v1.0.0 `SimpleHDA-Tahoe-v1.0.0-RELEASE.zip`; zip sha256 `89198256664078c91155d673ee7cebb08134dad1b71d5e34b0aa4ef0d4877f8f` | matches |
+| [IntelMausi](https://github.com/acidanthera/IntelMausi) | 1.0.8 | 1.0.8 is the latest (no newer commits since 2024-12) | release 1.0.8 | matches |
+| [AirportItlwm](https://github.com/laobamac/itlwm) | 2.4.0 (alpha, commit `738d4c6`, Tahoe build) | 2.4.0-alpha is the latest; no stable release | [laobamac/itlwm](https://github.com/laobamac/itlwm/releases/tag/v2.4.0-alpha) (not a fork; prerelease 2026-10-11), asset `AirportItlwm-Tahoe-v2.4.0-RELEASE-alpha-738d4c6.zip`; sha256 `25680aa39ddd79b205141875b261bdcc28bea150d13f27787b3c215555daa00f` | matches |
+| IntelBluetoothFirmware, IntelBTPatcher | 2.5.2 | 2.5.2 (2026-10-18) is the latest of the fork; [OpenIntelWireless](https://github.com/OpenIntelWireless/IntelBluetoothFirmware) upstream's latest release is still 2.4.0, no 2.5.x | [lshbluesky/IntelBluetoothFirmware](https://github.com/lshbluesky/IntelBluetoothFirmware) v2.5.2, a fork of OpenIntelWireless (7 commits ahead, 0 behind); zip sha256 `c26140b2091e7b41aab5e5fbdd322112908efc509f9fde3d71d4e3f91396b991` | matches |
+| [RealtekCardReader](https://github.com/0xFireWolf/RealtekCardReader) | 0.9.7 | 0.9.7 is the latest | release 0.9.7 (`006a845`) | matches |
+| [RealtekCardReaderFriend](https://github.com/0xFireWolf/RealtekCardReaderFriend) | 1.0.4 | 1.0.4 is the latest | release 1.0.4 (`e1e3301`) | matches |
+| USBPorts | 1.1 | n/a (local) | local USB map, from [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh) | not checked |
+| CPUFriendDataProvider | 1.0.1 | n/a (local) | local power data, from [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh) | not checked |
+| itlwm | 2.3.0 | 2.3.0 is the latest stable of [OpenIntelWireless/itlwm](https://github.com/OpenIntelWireless/itlwm) | release v2.3.0; present but **disabled** in `config.plist` (replaced by AirportItlwm) | matches the v2.3.0 release |
 
-OpenCore binaries, drivers and `Resources` come from the OpenCore 1.0.8 release and OcBinaryData (`HfsPlus.efi`). ACPI: `DMAR.aml`, `SSDT-AWAC-HPTE`, `SSDT-EC-USBX`, `SSDT-PLUG`, `SSDT-PMC`, `SSDT-SBUS-MCHC`, `SSDT-TYPC-NUC8-BC`.
+OpenCore binaries and drivers are the Dortania `64d1ed3` build (`OpenCore.efi`, `OpenCanopy`, `OpenRuntime`, `ResetNvramEntry`, `ToggleSipEntry` all match it; `OpenCore.efi` differs from the official 1.0.8 release zip). `HfsPlus.efi` is identical to [acidanthera/OcBinaryData](https://github.com/acidanthera/OcBinaryData) master. `Resources` come from the same OpenCore build. ACPI: `DMAR.aml`, `SSDT-AWAC-HPTE`, `SSDT-EC-USBX`, `SSDT-PLUG`, `SSDT-PMC`, `SSDT-SBUS-MCHC`, `SSDT-TYPC-NUC8-BC`.
 
 ## BIOS settings
 

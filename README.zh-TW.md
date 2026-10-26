@@ -4,7 +4,7 @@
 
 適用於 **Intel NUC8i7BEH** 的 OpenCore EFI，目前在 **macOS Tahoe 26.7.2 (25G330)** 上使用，並附上完整的建置與除錯紀錄。
 
-- OpenCore **1.0.8**（Dortania build-repo，OpenCorePkg commit `64d1ed3`，2026-08-31 建置）
+- OpenCore **1.0.8**（Dortania build-repo dev 建置 [`64d1ed3`](https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-64d1ed3)，2026-08-31 建置；官方 1.0.8 release 為 2026-09-27，Dortania 現已建 1.0.9 dev，2026-10-27 查）
 - SMBIOS：`iMac20,2`
 - 這是個人手動測試的設定，不是開箱即用的發行版。使用前請先看「可用／不可用」。
 
@@ -50,29 +50,29 @@
 
 ## Kext
 
-下列版本均讀自本 repo 內各 kext 的 `Info.plist`。Dortania build-repo 的建置是 Acidanthera master 的 CI 編譯；雜湊見安裝紀錄 [第 3.1 節](docs/history/01-windows-install-claude.md)。
+下列版本均讀自本 repo 內各 kext 的 `Info.plist`。「最新」於 2026-10-27 對照 GitHub release 與 [Dortania build-repo](https://github.com/dortania/build-repo)（Acidanthera master 的 CI 編譯；雜湊見安裝紀錄 [第 3.1 節](docs/history/01-windows-install-claude.md)）查得。「二進位」＝把 kext 執行檔的 sha256 與所列來源 zip 內的檔案比對。有較新版本者 EFI **未**更動，此處僅作報告。
 
-| Kext | 版本 | 來源 |
-| --- | --- | --- |
-| Lilu | 1.7.3 | Dortania build-repo |
-| WhateverGreen | 1.7.1 | Dortania build-repo |
-| VirtualSMC、SMCProcessor、SMCSuperIO | 1.3.8 | Dortania build-repo |
-| RestrictEvents | 1.1.7 | Dortania build-repo |
-| FeatureUnlock | 1.1.9 | Dortania build-repo |
-| CPUFriend | 1.3.1 | Dortania build-repo |
-| BlueToolFixup（BrcmPatchRAM） | 2.7.3 | Dortania build-repo，BrcmPatchRAM commit `6538902` |
-| AppleALC | 1.9.8 | 複製自 leoncdq/NUC8intosh，無留存雜湊（當時為上游最新正式版） |
-| SimpleHDA | 1.0.0 | [laobamac/SimpleHDA](https://github.com/laobamac/SimpleHDA) v1.0.0 release；zip sha256 `89198256664078c91155d673ee7cebb08134dad1b71d5e34b0aa4ef0d4877f8f` |
-| IntelMausi | 1.0.8 | [acidanthera/IntelMausi](https://github.com/acidanthera/IntelMausi) release 1.0.8 |
-| AirportItlwm | 2.4.0（alpha，commit `738d4c6`，Tahoe 版） | laobamac 的 itlwm 分支，release 檔案 `AirportItlwm-Tahoe-v2.4.0-RELEASE-alpha-738d4c6.zip`（prerelease，2026-10-11）；sha256 `25680aa39ddd79b205141875b261bdcc28bea150d13f27787b3c215555daa00f`。確切 repo 路徑來自 session 紀錄，下載前請自行確認 |
-| IntelBluetoothFirmware、IntelBTPatcher | 2.5.2 | [lshbluesky/IntelBluetoothFirmware](https://github.com/lshbluesky/IntelBluetoothFirmware) v2.5.2；zip sha256 `c26140b2091e7b41aab5e5fbdd322112908efc509f9fde3d71d4e3f91396b991`（支援 Tahoe 的 2.5.0 最初是以 CI 從上游 master 編出） |
-| RealtekCardReader | 0.9.7 | [0xFireWolf/RealtekCardReader](https://github.com/0xFireWolf/RealtekCardReader) release |
-| RealtekCardReaderFriend | 1.0.4 | [0xFireWolf/RealtekCardReaderFriend](https://github.com/0xFireWolf/RealtekCardReaderFriend) release |
-| USBPorts | 1.1 | 本機 USB 對應表，來自 leoncdq/NUC8intosh |
-| CPUFriendDataProvider | 1.0.1 | 本機電源資料，來自 leoncdq/NUC8intosh |
-| itlwm | 2.3.0 | 資料夾內仍有，但在 `config.plist` 中**已停用**（由 AirportItlwm 取代） |
+| Kext | 已安裝 | 最新可用（2026-10-27 查） | 來源 | 二進位 |
+| --- | --- | --- | --- | --- |
+| [Lilu](https://github.com/acidanthera/Lilu) | 1.7.3 | 正式版 1.7.2；dev 1.7.3（有較新建置 `0249c3a`） | Dortania [`Lilu-0515f40`](https://github.com/dortania/build-repo/releases/tag/Lilu-0515f40) | 與 `0515f40` 相符 |
+| [WhateverGreen](https://github.com/acidanthera/WhateverGreen) | 1.7.1 | 正式版 1.7.1；dev 1.7.2（`093e76f`） | Dortania [`WhateverGreen-ed5e710`](https://github.com/dortania/build-repo/releases/tag/WhateverGreen-ed5e710)（與 `0762cec` 同一份 binary） | 與 dev 建置相符；與 1.7.1 release zip 不同 |
+| [VirtualSMC](https://github.com/acidanthera/VirtualSMC)、SMCProcessor、SMCSuperIO | 1.3.8 | 正式版 1.3.8；dev 1.3.9（`b5c62c2`） | Dortania [`VirtualSMC-772c7bd`](https://github.com/dortania/build-repo/releases/tag/VirtualSMC-772c7bd) | 與 dev 建置相符；VirtualSMC 與 1.3.8 release zip 不同 |
+| [RestrictEvents](https://github.com/acidanthera/RestrictEvents) | 1.1.7 | 正式版 1.1.6；dev 1.1.7 已是最新（`9265e78`） | Dortania [`RestrictEvents-9265e78`](https://github.com/dortania/build-repo/releases/tag/RestrictEvents-9265e78) | 相符 |
+| [FeatureUnlock](https://github.com/acidanthera/FeatureUnlock) | 1.1.9 | 正式版 1.1.8；dev 1.1.9 已是最新（`201bd45`） | Dortania [`FeatureUnlock-201bd45`](https://github.com/dortania/build-repo/releases/tag/FeatureUnlock-201bd45) | 相符 |
+| [CPUFriend](https://github.com/acidanthera/CPUFriend) | 1.3.1 | 正式版 1.3.0；dev 1.3.1 已是最新（`30c7733`） | Dortania [`CPUFriend-30c7733`](https://github.com/dortania/build-repo/releases/tag/CPUFriend-30c7733) | 相符 |
+| BlueToolFixup（[BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM)） | 2.7.3 | 正式版 2.7.2；dev 2.7.3 已是最新（`6538902`） | Dortania [`BrcmPatchRAM-6538902`](https://github.com/dortania/build-repo/releases/tag/BrcmPatchRAM-6538902) | 相符 |
+| [AppleALC](https://github.com/acidanthera/AppleALC) | 1.9.8（2026-03-20 的 dev 建置） | 正式版 1.9.8（2026-09-27），比已安裝的新 | 並非來自正式 release：binary 就是 Dortania [`AppleALC-b31765e`](https://github.com/dortania/build-repo/releases/tag/AppleALC-b31765e)（"Bump version" commit），隨 leoncdq/NUC8intosh 進來 | 與 `b31765e` 相符；與官方 1.9.8 release zip、Dortania `f9fceb4` **不同** |
+| [SimpleHDA](https://github.com/laobamac/SimpleHDA) | 1.0.0 | 1.0.0（v1.0.0，2026-10-14）即最新 | laobamac/SimpleHDA v1.0.0 `SimpleHDA-Tahoe-v1.0.0-RELEASE.zip`；zip sha256 `89198256664078c91155d673ee7cebb08134dad1b71d5e34b0aa4ef0d4877f8f` | 相符 |
+| [IntelMausi](https://github.com/acidanthera/IntelMausi) | 1.0.8 | 1.0.8 即最新（2024-12 後無新 commit） | release 1.0.8 | 相符 |
+| [AirportItlwm](https://github.com/laobamac/itlwm) | 2.4.0（alpha，commit `738d4c6`，Tahoe 版） | 2.4.0-alpha 即最新；尚無正式版 | [laobamac/itlwm](https://github.com/laobamac/itlwm/releases/tag/v2.4.0-alpha)（非 fork；prerelease，2026-10-11），檔案 `AirportItlwm-Tahoe-v2.4.0-RELEASE-alpha-738d4c6.zip`；sha256 `25680aa39ddd79b205141875b261bdcc28bea150d13f27787b3c215555daa00f` | 相符 |
+| IntelBluetoothFirmware、IntelBTPatcher | 2.5.2 | 此 fork 的 2.5.2（2026-10-18）即最新；上游 [OpenIntelWireless](https://github.com/OpenIntelWireless/IntelBluetoothFirmware) 最新 release 仍是 2.4.0，沒有 2.5.x | [lshbluesky/IntelBluetoothFirmware](https://github.com/lshbluesky/IntelBluetoothFirmware) v2.5.2，是 OpenIntelWireless 的 fork（領先 7 個 commit、落後 0）；zip sha256 `c26140b2091e7b41aab5e5fbdd322112908efc509f9fde3d71d4e3f91396b991` | 相符 |
+| [RealtekCardReader](https://github.com/0xFireWolf/RealtekCardReader) | 0.9.7 | 0.9.7 即最新 | release 0.9.7（`006a845`） | 相符 |
+| [RealtekCardReaderFriend](https://github.com/0xFireWolf/RealtekCardReaderFriend) | 1.0.4 | 1.0.4 即最新 | release 1.0.4（`e1e3301`） | 相符 |
+| USBPorts | 1.1 | 不適用（本機） | 本機 USB 對應表，來自 [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh) | 未檢查 |
+| CPUFriendDataProvider | 1.0.1 | 不適用（本機） | 本機電源資料，來自 [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh) | 未檢查 |
+| itlwm | 2.3.0 | 2.3.0 為 [OpenIntelWireless/itlwm](https://github.com/OpenIntelWireless/itlwm) 最新正式版 | release v2.3.0；資料夾內仍有，但在 `config.plist` 中**已停用**（由 AirportItlwm 取代） | 與 v2.3.0 release 相符 |
 
-OpenCore 本體、Drivers 與 `Resources` 來自 OpenCore 1.0.8 release 與 OcBinaryData（`HfsPlus.efi`）。ACPI：`DMAR.aml`、`SSDT-AWAC-HPTE`、`SSDT-EC-USBX`、`SSDT-PLUG`、`SSDT-PMC`、`SSDT-SBUS-MCHC`、`SSDT-TYPC-NUC8-BC`。
+OpenCore 本體與 Drivers 為 Dortania `64d1ed3` 建置（`OpenCore.efi`、`OpenCanopy`、`OpenRuntime`、`ResetNvramEntry`、`ToggleSipEntry` 均相符；`OpenCore.efi` 與官方 1.0.8 release zip 不同）。`HfsPlus.efi` 與 [acidanthera/OcBinaryData](https://github.com/acidanthera/OcBinaryData) master 相同。`Resources` 來自同一份 OpenCore 建置。ACPI：`DMAR.aml`、`SSDT-AWAC-HPTE`、`SSDT-EC-USBX`、`SSDT-PLUG`、`SSDT-PMC`、`SSDT-SBUS-MCHC`、`SSDT-TYPC-NUC8-BC`。
 
 ## BIOS 設定
 
