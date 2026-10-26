@@ -1,1 +1,8 @@
 .DS_Store
+47ced2e8-*/
+*.img
+*.zip
+com.apple.recovery.boot/
+opencore-*.txt
+SysReport/
+config.plist.bak*
