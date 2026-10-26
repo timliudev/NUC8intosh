@@ -4,7 +4,7 @@ English | [繁體中文](README.zh-TW.md)
 
 An OpenCore EFI for the **Intel NUC8i7BEH** running **macOS Tahoe 26.7.2 (25G330)**, plus the notes that explain how it got there.
 
-- OpenCore **1.0.8** (Dortania build-repo dev build [`64d1ed3`](https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-64d1ed3), built 2026-08-31; the official 1.0.8 release is 2026-09-27 and Dortania now builds 1.0.9 dev, checked 2026-10-27)
+- OpenCore **1.0.8** (official release, 2026-09-27; `OpenCore.efi`, `BOOTx64.efi` and the OpenCore drivers are from the official `OpenCore-1.0.8-RELEASE.zip`)
 - SMBIOS: `iMac20,2`
 - This is a personal, hand-tested setup, not a turnkey release. Read "What works / what does not" before relying on it.
 
@@ -50,18 +50,18 @@ Intermittent USB drop-outs and `bluetoothd` crashes were seen earlier in the pro
 
 ## Kexts
 
-All versions below were read from the kexts' `Info.plist` files in this repo. "Latest" was checked on 2026-10-27 against GitHub releases and [Dortania build-repo](https://github.com/dortania/build-repo) (CI builds of Acidanthera master). "Binary" = the kext executable's sha256 was compared with the binary in the named source zip. Where a newer build exists the EFI was **not** changed; this is only a report.
+All versions below were read from the kexts' `Info.plist` files in this repo. "Latest" was checked on 2026-10-27 against GitHub releases and [Dortania build-repo](https://github.com/dortania/build-repo). Policy: use the **official latest release** whenever one exists; every official zip's sha256 was checked against the GitHub asset digest and the executable's sha256 was compared with the installed file. Dev builds (Dortania) are no longer used. Where the official release is *older* than the previous dev build, the reason is in the table.
 
 | Kext | Installed | Latest available (checked 2026-10-27) | Source | Binary |
 | --- | --- | --- | --- | --- |
-| [Lilu](https://github.com/acidanthera/Lilu) | 1.7.3 | stable 1.7.2; dev 1.7.3 (newer build `0249c3a`) | Dortania [`Lilu-0515f40`](https://github.com/dortania/build-repo/releases/tag/Lilu-0515f40) | matches `0515f40` |
-| [WhateverGreen](https://github.com/acidanthera/WhateverGreen) | 1.7.1 | stable 1.7.1; dev 1.7.2 (`093e76f`) | Dortania [`WhateverGreen-ed5e710`](https://github.com/dortania/build-repo/releases/tag/WhateverGreen-ed5e710) (same binary as `0762cec`) | matches dev build; differs from the 1.7.1 release zip |
-| [VirtualSMC](https://github.com/acidanthera/VirtualSMC), SMCProcessor, SMCSuperIO | 1.3.8 | stable 1.3.8; dev 1.3.9 (`b5c62c2`) | Dortania [`VirtualSMC-772c7bd`](https://github.com/dortania/build-repo/releases/tag/VirtualSMC-772c7bd) | matches dev build; VirtualSMC differs from the 1.3.8 release zip |
-| [RestrictEvents](https://github.com/acidanthera/RestrictEvents) | 1.1.7 | stable 1.1.6; dev 1.1.7 is newest (`9265e78`) | Dortania [`RestrictEvents-9265e78`](https://github.com/dortania/build-repo/releases/tag/RestrictEvents-9265e78) | matches |
-| [FeatureUnlock](https://github.com/acidanthera/FeatureUnlock) | 1.1.9 | stable 1.1.8; dev 1.1.9 is newest (`201bd45`) | Dortania [`FeatureUnlock-201bd45`](https://github.com/dortania/build-repo/releases/tag/FeatureUnlock-201bd45) | matches |
-| [CPUFriend](https://github.com/acidanthera/CPUFriend) | 1.3.1 | stable 1.3.0; dev 1.3.1 is newest (`30c7733`) | Dortania [`CPUFriend-30c7733`](https://github.com/dortania/build-repo/releases/tag/CPUFriend-30c7733) | matches |
-| BlueToolFixup ([BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM)) | 2.7.3 | stable 2.7.2; dev 2.7.3 is newest (`6538902`) | Dortania [`BrcmPatchRAM-6538902`](https://github.com/dortania/build-repo/releases/tag/BrcmPatchRAM-6538902) | matches |
-| [AppleALC](https://github.com/acidanthera/AppleALC) | 1.9.8 (a 2026-03-20 dev build) | stable 1.9.8 (2026-09-27); newer than installed | Not copied from a release: the binary is Dortania [`AppleALC-b31765e`](https://github.com/dortania/build-repo/releases/tag/AppleALC-b31765e) ("Bump version" commit), which is how it reached leoncdq/NUC8intosh | matches `b31765e`; **differs** from the official 1.9.8 release zip and from Dortania `f9fceb4` |
+| [Lilu](https://github.com/acidanthera/Lilu) | 1.7.2 | 1.7.2 is the official latest (2026-03-20); master is 1.7.3 | Official [1.7.2](https://github.com/acidanthera/Lilu/releases/tag/1.7.2) `Lilu-1.7.2-RELEASE.zip` | matches. Was dev 1.7.3; 1.7.3 adds only a Tiger Lake-H CPU model (+ analyzer fix, not released), irrelevant to Coffee Lake. 1.7.1 already allows loading on macOS 26 without `-lilubetaall`; every kext here needs Lilu ≥1.2.0 (SimpleHDA ≥1.7.1), so 1.7.2 suffices |
+| [WhateverGreen](https://github.com/acidanthera/WhateverGreen) | 1.7.1 | 1.7.1 is the official latest (2026-09-27) | Official [1.7.1](https://github.com/acidanthera/WhateverGreen/releases/tag/1.7.1) `WhateverGreen-1.7.1-RELEASE.zip` | matches (replaced a dev build) |
+| [VirtualSMC](https://github.com/acidanthera/VirtualSMC), SMCProcessor, SMCSuperIO | 1.3.8 | 1.3.8 is the official latest (2026-09-27) | Official [1.3.8](https://github.com/acidanthera/VirtualSMC/releases/tag/1.3.8) `VirtualSMC-1.3.8-RELEASE.zip` | matches (replaced a dev build) |
+| [RestrictEvents](https://github.com/acidanthera/RestrictEvents) | 1.1.6 | 1.1.6 is the official latest (2025-07-07) | Official [1.1.6](https://github.com/acidanthera/RestrictEvents/releases/tag/1.1.6) | matches. Was dev 1.1.7: The dev "newer" version is only a post-release `Bump version` commit (project file only); no code change |
+| [FeatureUnlock](https://github.com/acidanthera/FeatureUnlock) | 1.1.8 | 1.1.8 is the official latest (2025-07-07) | Official [1.1.8](https://github.com/acidanthera/FeatureUnlock/releases/tag/1.1.8) | matches. Was dev 1.1.9: The dev "newer" version is only a post-release `Bump version` commit (project file only); no code change |
+| [CPUFriend](https://github.com/acidanthera/CPUFriend) | 1.3.0 | 1.3.0 is the official latest (2025-07-07) | Official [1.3.0](https://github.com/acidanthera/CPUFriend/releases/tag/1.3.0) | matches. Was dev 1.3.1: The dev "newer" version is only a post-release `Bump version` commit (project file only); no code change |
+| BlueToolFixup ([BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM)) | 2.7.2 | 2.7.2 is the official latest (2026-03-20) | Official [2.7.2](https://github.com/acidanthera/BrcmPatchRAM/releases/tag/2.7.2) `BrcmPatchRAM-2.7.2-RELEASE.zip` | matches. Was dev 2.7.3: only a `Bump version` commit (project and injector Info.plists, not BlueToolFixup code) |
+| [AppleALC](https://github.com/acidanthera/AppleALC) | 1.9.8 | 1.9.8 is the official latest (2026-09-27) | Official [1.9.8](https://github.com/acidanthera/AppleALC/releases/tag/1.9.8) `AppleALC-1.9.8-RELEASE.zip` | matches (replaced a 2026-03 dev build) |
 | [SimpleHDA](https://github.com/laobamac/SimpleHDA) | 1.0.0 | 1.0.0 (v1.0.0, 2026-10-14) is the latest | laobamac/SimpleHDA v1.0.0 `SimpleHDA-Tahoe-v1.0.0-RELEASE.zip`; zip sha256 `89198256664078c91155d673ee7cebb08134dad1b71d5e34b0aa4ef0d4877f8f` | matches |
 | [IntelMausi](https://github.com/acidanthera/IntelMausi) | 1.0.8 | 1.0.8 is the latest (no newer commits since 2024-12) | release 1.0.8 | matches |
 | [AirportItlwm](https://github.com/laobamac/itlwm) | 2.4.0 (alpha, commit `738d4c6`, Tahoe build) | 2.4.0-alpha is the latest; no stable release | [laobamac/itlwm](https://github.com/laobamac/itlwm/releases/tag/v2.4.0-alpha) (not a fork; prerelease 2026-10-11), asset `AirportItlwm-Tahoe-v2.4.0-RELEASE-alpha-738d4c6.zip`; sha256 `25680aa39ddd79b205141875b261bdcc28bea150d13f27787b3c215555daa00f` | matches |
@@ -72,7 +72,9 @@ All versions below were read from the kexts' `Info.plist` files in this repo. "L
 | CPUFriendDataProvider | 1.0.1 | n/a (local) | local power data, from [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh) | not checked |
 | itlwm | 2.3.0 | 2.3.0 is the latest stable of [OpenIntelWireless/itlwm](https://github.com/OpenIntelWireless/itlwm) | release v2.3.0; present but **disabled** in `config.plist` (replaced by AirportItlwm) | matches the v2.3.0 release |
 
-OpenCore binaries and drivers are the Dortania `64d1ed3` build (`OpenCore.efi`, `OpenCanopy`, `OpenRuntime`, `ResetNvramEntry`, `ToggleSipEntry` all match it; `OpenCore.efi` differs from the official 1.0.8 release zip). `HfsPlus.efi` is identical to [acidanthera/OcBinaryData](https://github.com/acidanthera/OcBinaryData) master. `Resources` come from the same OpenCore build. ACPI: `DMAR.aml`, `SSDT-AWAC-HPTE`, `SSDT-EC-USBX`, `SSDT-PLUG`, `SSDT-PMC`, `SSDT-SBUS-MCHC`, `SSDT-TYPC-NUC8-BC`.
+OpenCore binaries and drivers (`OpenCore.efi`, `BOOTx64.efi`, `OpenCanopy`, `OpenRuntime`, `ResetNvramEntry`, `ToggleSipEntry`) are from the official [OpenCore 1.0.8](https://github.com/acidanthera/OpenCorePkg/releases/tag/1.0.8) `OpenCore-1.0.8-RELEASE.zip` (sha256 `2011e8b7216ecb2645d97ea710df965947edd406846e92050b9bc4190be6d27b`); `config.plist` passes the release's `ocvalidate`. `HfsPlus.efi` is identical to [acidanthera/OcBinaryData](https://github.com/acidanthera/OcBinaryData) master. `Resources` come from OcBinaryData. ACPI: `DMAR.aml`, `SSDT-AWAC-HPTE`, `SSDT-EC-USBX`, `SSDT-PLUG`, `SSDT-PMC`, `SSDT-SBUS-MCHC`, `SSDT-TYPC-NUC8-BC`.
+
+Not official-stable on purpose: **AirportItlwm** (laobamac's 2.4.0-alpha is the only Tahoe build; OpenIntelWireless/itlwm's latest is 2.3.0 and has no Tahoe AirportItlwm) and **IntelBluetoothFirmware/IntelBTPatcher 2.5.2** (lshbluesky fork; the official OpenIntelWireless 2.4.0 does not load on Tahoe). SimpleHDA is laobamac's official v1.0.0 release.
 
 ## BIOS settings
 
@@ -117,7 +119,7 @@ Recommended: Deep S4/S5 Disabled, Wake on LAN from S4/S5 Stay Off, Intel SGX Dis
 - [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh): the starting point of this repo. Git history from that repo is kept. The **seven ACPI tables, `USBPorts.kext` and `CPUFriendDataProvider.kext`** still come from it.
 - [zearp/Nucintosh](https://github.com/zearp/Nucintosh): the reference NUC8 Hackintosh guide.
 - [Acidanthera](https://github.com/acidanthera): OpenCorePkg, Lilu, WhateverGreen, VirtualSMC, AppleALC, RestrictEvents, FeatureUnlock, CPUFriend, IntelMausi, BrcmPatchRAM (BlueToolFixup), OcBinaryData.
-- [Dortania build-repo](https://github.com/dortania/build-repo): CI builds used for most kexts and OpenCore.
+- [Dortania build-repo](https://github.com/dortania/build-repo): CI builds, used only to check what is newer than the official releases.
 - [OpenIntelWireless](https://github.com/OpenIntelWireless): itlwm, HeliPort, IntelBluetoothFirmware.
 - laobamac: SimpleHDA and the AirportItlwm Tahoe build.
 - lshbluesky: the IntelBluetoothFirmware 2.5.x builds.

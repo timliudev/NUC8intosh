@@ -4,7 +4,7 @@
 
 適用於 **Intel NUC8i7BEH** 的 OpenCore EFI，目前在 **macOS Tahoe 26.7.2 (25G330)** 上使用，並附上完整的建置與除錯紀錄。
 
-- OpenCore **1.0.8**（Dortania build-repo dev 建置 [`64d1ed3`](https://github.com/dortania/build-repo/releases/tag/OpenCorePkg-64d1ed3)，2026-08-31 建置；官方 1.0.8 release 為 2026-09-27，Dortania 現已建 1.0.9 dev，2026-10-27 查）
+- OpenCore **1.0.8**（官方 release，2026-09-27；`OpenCore.efi`、`BOOTx64.efi` 與 OpenCore 驅動均取自官方 `OpenCore-1.0.8-RELEASE.zip`）
 - SMBIOS：`iMac20,2`
 - 這是個人手動測試的設定，不是開箱即用的發行版。使用前請先看「可用／不可用」。
 
@@ -50,18 +50,18 @@
 
 ## Kext
 
-下列版本均讀自本 repo 內各 kext 的 `Info.plist`。「最新」於 2026-10-27 對照 GitHub release 與 [Dortania build-repo](https://github.com/dortania/build-repo)（Acidanthera master 的 CI 編譯）查得。「二進位」＝把 kext 執行檔的 sha256 與所列來源 zip 內的檔案比對。有較新版本者 EFI **未**更動，此處僅作報告。
+下列版本均讀自本 repo 內各 kext 的 `Info.plist`。「最新」於 2026-10-27 對照 GitHub release 與 [Dortania build-repo](https://github.com/dortania/build-repo) 查得。原則：只要有**官方最新 release** 就用官方版；每個官方 zip 的 sha256 都對過 GitHub asset digest，並把執行檔 sha256 與已安裝檔案比對。不再使用 Dortania dev 建置。官方版**比先前的 dev 建置舊**者，原因寫在表中。
 
 | Kext | 已安裝 | 最新可用（2026-10-27 查） | 來源 | 二進位 |
 | --- | --- | --- | --- | --- |
-| [Lilu](https://github.com/acidanthera/Lilu) | 1.7.3 | 正式版 1.7.2；dev 1.7.3（有較新建置 `0249c3a`） | Dortania [`Lilu-0515f40`](https://github.com/dortania/build-repo/releases/tag/Lilu-0515f40) | 與 `0515f40` 相符 |
-| [WhateverGreen](https://github.com/acidanthera/WhateverGreen) | 1.7.1 | 正式版 1.7.1；dev 1.7.2（`093e76f`） | Dortania [`WhateverGreen-ed5e710`](https://github.com/dortania/build-repo/releases/tag/WhateverGreen-ed5e710)（與 `0762cec` 同一份 binary） | 與 dev 建置相符；與 1.7.1 release zip 不同 |
-| [VirtualSMC](https://github.com/acidanthera/VirtualSMC)、SMCProcessor、SMCSuperIO | 1.3.8 | 正式版 1.3.8；dev 1.3.9（`b5c62c2`） | Dortania [`VirtualSMC-772c7bd`](https://github.com/dortania/build-repo/releases/tag/VirtualSMC-772c7bd) | 與 dev 建置相符；VirtualSMC 與 1.3.8 release zip 不同 |
-| [RestrictEvents](https://github.com/acidanthera/RestrictEvents) | 1.1.7 | 正式版 1.1.6；dev 1.1.7 已是最新（`9265e78`） | Dortania [`RestrictEvents-9265e78`](https://github.com/dortania/build-repo/releases/tag/RestrictEvents-9265e78) | 相符 |
-| [FeatureUnlock](https://github.com/acidanthera/FeatureUnlock) | 1.1.9 | 正式版 1.1.8；dev 1.1.9 已是最新（`201bd45`） | Dortania [`FeatureUnlock-201bd45`](https://github.com/dortania/build-repo/releases/tag/FeatureUnlock-201bd45) | 相符 |
-| [CPUFriend](https://github.com/acidanthera/CPUFriend) | 1.3.1 | 正式版 1.3.0；dev 1.3.1 已是最新（`30c7733`） | Dortania [`CPUFriend-30c7733`](https://github.com/dortania/build-repo/releases/tag/CPUFriend-30c7733) | 相符 |
-| BlueToolFixup（[BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM)） | 2.7.3 | 正式版 2.7.2；dev 2.7.3 已是最新（`6538902`） | Dortania [`BrcmPatchRAM-6538902`](https://github.com/dortania/build-repo/releases/tag/BrcmPatchRAM-6538902) | 相符 |
-| [AppleALC](https://github.com/acidanthera/AppleALC) | 1.9.8（2026-03-20 的 dev 建置） | 正式版 1.9.8（2026-09-27），比已安裝的新 | 並非來自正式 release：binary 就是 Dortania [`AppleALC-b31765e`](https://github.com/dortania/build-repo/releases/tag/AppleALC-b31765e)（"Bump version" commit），隨 leoncdq/NUC8intosh 進來 | 與 `b31765e` 相符；與官方 1.9.8 release zip、Dortania `f9fceb4` **不同** |
+| [Lilu](https://github.com/acidanthera/Lilu) | 1.7.2 | 1.7.2 為官方最新（2026-03-20）；master 為 1.7.3 | 官方 [1.7.2](https://github.com/acidanthera/Lilu/releases/tag/1.7.2) `Lilu-1.7.2-RELEASE.zip` | 相符。原為 dev 1.7.3；1.7.3 只新增 Tiger Lake-H CPU 型號（另有未發行的 analyzer 修正），與 Coffee Lake 無關。1.7.1 起已可在 macOS 26 不加 `-lilubetaall` 載入；本 EFI 所有 kext 只需 Lilu ≥1.2.0（SimpleHDA ≥1.7.1），故 1.7.2 足夠 |
+| [WhateverGreen](https://github.com/acidanthera/WhateverGreen) | 1.7.1 | 1.7.1 為官方最新（2026-09-27） | 官方 [1.7.1](https://github.com/acidanthera/WhateverGreen/releases/tag/1.7.1) `WhateverGreen-1.7.1-RELEASE.zip` | 相符（取代原 dev 建置） |
+| [VirtualSMC](https://github.com/acidanthera/VirtualSMC)、SMCProcessor、SMCSuperIO | 1.3.8 | 1.3.8 為官方最新（2026-09-27） | 官方 [1.3.8](https://github.com/acidanthera/VirtualSMC/releases/tag/1.3.8) `VirtualSMC-1.3.8-RELEASE.zip` | 相符（取代原 dev 建置） |
+| [RestrictEvents](https://github.com/acidanthera/RestrictEvents) | 1.1.6 | 1.1.6 為官方最新（2025-07-07） | 官方 [1.1.6](https://github.com/acidanthera/RestrictEvents/releases/tag/1.1.6) | 相符。原為 dev 1.1.7：dev 的「較新」版本只是 release 後的 `Bump version` commit（僅改專案檔），沒有程式變更 |
+| [FeatureUnlock](https://github.com/acidanthera/FeatureUnlock) | 1.1.8 | 1.1.8 為官方最新（2025-07-07） | 官方 [1.1.8](https://github.com/acidanthera/FeatureUnlock/releases/tag/1.1.8) | 相符。原為 dev 1.1.9：dev 的「較新」版本只是 release 後的 `Bump version` commit（僅改專案檔），沒有程式變更 |
+| [CPUFriend](https://github.com/acidanthera/CPUFriend) | 1.3.0 | 1.3.0 為官方最新（2025-07-07） | 官方 [1.3.0](https://github.com/acidanthera/CPUFriend/releases/tag/1.3.0) | 相符。原為 dev 1.3.1：dev 的「較新」版本只是 release 後的 `Bump version` commit（僅改專案檔），沒有程式變更 |
+| BlueToolFixup（[BrcmPatchRAM](https://github.com/acidanthera/BrcmPatchRAM)） | 2.7.2 | 2.7.2 為官方最新（2026-03-20） | 官方 [2.7.2](https://github.com/acidanthera/BrcmPatchRAM/releases/tag/2.7.2) `BrcmPatchRAM-2.7.2-RELEASE.zip` | 相符。原為 dev 2.7.3：只是 `Bump version` commit（專案檔與 injector 的 Info.plist，不含 BlueToolFixup 程式） |
+| [AppleALC](https://github.com/acidanthera/AppleALC) | 1.9.8 | 1.9.8 為官方最新（2026-09-27） | 官方 [1.9.8](https://github.com/acidanthera/AppleALC/releases/tag/1.9.8) `AppleALC-1.9.8-RELEASE.zip` | 相符（取代 2026-03 的 dev 建置） |
 | [SimpleHDA](https://github.com/laobamac/SimpleHDA) | 1.0.0 | 1.0.0（v1.0.0，2026-10-14）即最新 | laobamac/SimpleHDA v1.0.0 `SimpleHDA-Tahoe-v1.0.0-RELEASE.zip`；zip sha256 `89198256664078c91155d673ee7cebb08134dad1b71d5e34b0aa4ef0d4877f8f` | 相符 |
 | [IntelMausi](https://github.com/acidanthera/IntelMausi) | 1.0.8 | 1.0.8 即最新（2024-12 後無新 commit） | release 1.0.8 | 相符 |
 | [AirportItlwm](https://github.com/laobamac/itlwm) | 2.4.0（alpha，commit `738d4c6`，Tahoe 版） | 2.4.0-alpha 即最新；尚無正式版 | [laobamac/itlwm](https://github.com/laobamac/itlwm/releases/tag/v2.4.0-alpha)（非 fork；prerelease，2026-10-11），檔案 `AirportItlwm-Tahoe-v2.4.0-RELEASE-alpha-738d4c6.zip`；sha256 `25680aa39ddd79b205141875b261bdcc28bea150d13f27787b3c215555daa00f` | 相符 |
@@ -72,7 +72,9 @@
 | CPUFriendDataProvider | 1.0.1 | 不適用（本機） | 本機電源資料，來自 [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh) | 未檢查 |
 | itlwm | 2.3.0 | 2.3.0 為 [OpenIntelWireless/itlwm](https://github.com/OpenIntelWireless/itlwm) 最新正式版 | release v2.3.0；資料夾內仍有，但在 `config.plist` 中**已停用**（由 AirportItlwm 取代） | 與 v2.3.0 release 相符 |
 
-OpenCore 本體與 Drivers 為 Dortania `64d1ed3` 建置（`OpenCore.efi`、`OpenCanopy`、`OpenRuntime`、`ResetNvramEntry`、`ToggleSipEntry` 均相符；`OpenCore.efi` 與官方 1.0.8 release zip 不同）。`HfsPlus.efi` 與 [acidanthera/OcBinaryData](https://github.com/acidanthera/OcBinaryData) master 相同。`Resources` 來自同一份 OpenCore 建置。ACPI：`DMAR.aml`、`SSDT-AWAC-HPTE`、`SSDT-EC-USBX`、`SSDT-PLUG`、`SSDT-PMC`、`SSDT-SBUS-MCHC`、`SSDT-TYPC-NUC8-BC`。
+OpenCore 本體與 Drivers（`OpenCore.efi`、`BOOTx64.efi`、`OpenCanopy`、`OpenRuntime`、`ResetNvramEntry`、`ToggleSipEntry`）取自官方 [OpenCore 1.0.8](https://github.com/acidanthera/OpenCorePkg/releases/tag/1.0.8) 的 `OpenCore-1.0.8-RELEASE.zip`（sha256 `2011e8b7216ecb2645d97ea710df965947edd406846e92050b9bc4190be6d27b`）；`config.plist` 通過該版 `ocvalidate`。`HfsPlus.efi` 與 [acidanthera/OcBinaryData](https://github.com/acidanthera/OcBinaryData) master 相同。`Resources` 來自 OcBinaryData。ACPI：`DMAR.aml`、`SSDT-AWAC-HPTE`、`SSDT-EC-USBX`、`SSDT-PLUG`、`SSDT-PMC`、`SSDT-SBUS-MCHC`、`SSDT-TYPC-NUC8-BC`。
+
+刻意不是官方穩定版者：**AirportItlwm**（laobamac 的 2.4.0-alpha 是唯一的 Tahoe 版；OpenIntelWireless/itlwm 最新為 2.3.0，沒有 Tahoe 的 AirportItlwm）與 **IntelBluetoothFirmware/IntelBTPatcher 2.5.2**（lshbluesky fork；官方 OpenIntelWireless 2.4.0 在 Tahoe 上無法載入）。SimpleHDA 為 laobamac 官方 v1.0.0 release。
 
 ## BIOS 設定
 
@@ -117,7 +119,7 @@ OpenCore 本體與 Drivers 為 Dortania `64d1ed3` 建置（`OpenCore.efi`、`Ope
 - [leoncdq/NUC8intosh](https://github.com/leoncdq/NUC8intosh)：本 repo 的起點，其 git 歷史予以保留。**七個 ACPI 表、`USBPorts.kext`、`CPUFriendDataProvider.kext`** 仍來自該 repo。
 - [zearp/Nucintosh](https://github.com/zearp/Nucintosh)：NUC8 Hackintosh 的參考指南。
 - [Acidanthera](https://github.com/acidanthera)：OpenCorePkg、Lilu、WhateverGreen、VirtualSMC、AppleALC、RestrictEvents、FeatureUnlock、CPUFriend、IntelMausi、BrcmPatchRAM（BlueToolFixup）、OcBinaryData。
-- [Dortania build-repo](https://github.com/dortania/build-repo)：多數 kext 與 OpenCore 使用的 CI 建置。
+- [Dortania build-repo](https://github.com/dortania/build-repo)：CI 建置，僅用來比對是否有比官方 release 更新的版本。
 - [OpenIntelWireless](https://github.com/OpenIntelWireless)：itlwm、HeliPort、IntelBluetoothFirmware。
 - laobamac：SimpleHDA 與 AirportItlwm Tahoe 版。
 - lshbluesky：IntelBluetoothFirmware 2.5.x 建置。
